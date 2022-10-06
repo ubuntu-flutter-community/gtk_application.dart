@@ -16,24 +16,44 @@ struct _GtkApplicationPlugin {
 
 G_DEFINE_TYPE(GtkApplicationPlugin, gtk_application_plugin, g_object_get_type())
 
-// Called when a method call is received from Flutter.
-static void gtk_application_plugin_handle_method_call(
-    GtkApplicationPlugin* self, FlMethodCall* method_call) {
-  g_autoptr(FlMethodResponse) response = nullptr;
-
-  const gchar* method = fl_method_call_get_name(method_call);
-
-  if (strcmp(method, "getPlatformVersion") == 0) {
-    struct utsname uname_data = {};
-    uname(&uname_data);
-    g_autofree gchar* version = g_strdup_printf("Linux %s", uname_data.version);
-    g_autoptr(FlValue) result = fl_value_new_string(version);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
-  } else {
-    response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
+static void method_response_cb(GObject* object, GAsyncResult* result,
+                               gpointer user_data) {
+  FlMethodChannel* method_channel = FL_METHOD_CHANNEL(user_data);
+  g_autoptr(GError) error = nullptr;
+  g_autoptr(FlMethodResponse) response =
+      fl_method_channel_invoke_method_finish(method_channel, result, &error);
+  if (response == nullptr) {
+    g_warning("Failed to call method: %s", error->message);
   }
+}
 
-  fl_method_call_respond(method_call, response, nullptr);
+static gint command_line_cb(GApplication* application,
+                            GApplicationCommandLine* command_line,
+                            gpointer user_data) {
+  FlMethodChannel* method_channel = FL_METHOD_CHANNEL(user_data);
+  if (g_application_command_line_get_is_remote(command_line)) {
+    gchar** arguments =
+        g_application_command_line_get_arguments(command_line, nullptr);
+    g_autoptr(FlValue) value = fl_value_new_list_from_strv(arguments + 1);
+    fl_method_channel_invoke_method(method_channel, "command-line", value,
+                                    nullptr, method_response_cb,
+                                    method_channel);
+  }
+  return 0;
+}
+
+static void open_cb(GApplication* application, GFile** files, gint n_files,
+                    gchar* hint, gpointer user_data) {
+  FlMethodChannel* method_channel = FL_METHOD_CHANNEL(user_data);
+  g_autoptr(FlValue) value = fl_value_new_map();
+  FlValue* list = fl_value_new_list();
+  for (int i = 0; i < n_files; ++i) {
+    fl_value_append_take(list, fl_value_new_string(g_file_get_uri(files[i])));
+  }
+  fl_value_set_string_take(value, "files", list);
+  fl_value_set_string_take(value, "hint", fl_value_new_string(hint));
+  fl_method_channel_invoke_method(method_channel, "open", value, nullptr,
+                                  method_response_cb, method_channel);
 }
 
 static void gtk_application_plugin_dispose(GObject* object) {
@@ -47,12 +67,6 @@ static void gtk_application_plugin_class_init(
 
 static void gtk_application_plugin_init(GtkApplicationPlugin* self) {}
 
-static void method_call_cb(FlMethodChannel* channel, FlMethodCall* method_call,
-                           gpointer user_data) {
-  GtkApplicationPlugin* plugin = GTK_APPLICATION_PLUGIN(user_data);
-  gtk_application_plugin_handle_method_call(plugin, method_call);
-}
-
 void gtk_application_plugin_register_with_registrar(
     FlPluginRegistrar* registrar) {
   GtkApplicationPlugin* plugin = GTK_APPLICATION_PLUGIN(
@@ -62,8 +76,10 @@ void gtk_application_plugin_register_with_registrar(
   g_autoptr(FlMethodChannel) channel =
       fl_method_channel_new(fl_plugin_registrar_get_messenger(registrar),
                             "gtk_application", FL_METHOD_CODEC(codec));
-  fl_method_channel_set_method_call_handler(
-      channel, method_call_cb, g_object_ref(plugin), g_object_unref);
+
+  GApplication* app = g_application_get_default();
+  g_signal_connect(app, "command-line", G_CALLBACK(command_line_cb), channel);
+  g_signal_connect(app, "open", G_CALLBACK(open_cb), channel);
 
   g_object_unref(plugin);
 }

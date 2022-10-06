@@ -1,62 +1,52 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:gtk_application/gtk_application.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MaterialApp(home: MyHomePage()));
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _gtkApplicationPlugin = GtkApplication();
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _gtkApplicationPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('gtk_application'),
+      ),
+      body: GtkApplication(
+        child: const SizedBox.shrink(),
+        onCommandLine: (args) async {
+          print(args);
+          await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('command-line'),
+              content: Text(args.toString()),
+              actions: [
+                OutlinedButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
+          );
+        },
+        onOpen: (files, hint) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('open $hint'),
+              content: Column(
+                children: files.map((f) => Text(f)).toList(),
+              ),
+              actions: [
+                OutlinedButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

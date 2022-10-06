@@ -36,13 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -109,6 +102,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -170,6 +170,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  yaru:
+    dependency: "direct main"
+    description:
+      name: yaru
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
+  yaru_color_generator:
+    dependency: transitive
+    description:
+      name: yaru_color_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
+  yaru_colors:
+    dependency: transitive
+    description:
+      name: yaru_colors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
 sdks:
   dart: ">=2.18.2 <3.0.0"
-  flutter: ">=2.5.0"
+  flutter: ">=3.3.0"
