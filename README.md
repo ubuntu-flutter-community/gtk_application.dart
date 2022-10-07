@@ -7,6 +7,8 @@ file open requests.
 | **NOTE:** `linux/my_application.cc` must be modified for this package to be able to function. See "Getting Started" below for details. |
 | --- |
 
+[gtk-application.webm](https://user-images.githubusercontent.com/140617/194487627-093236b4-ee1a-4b05-82e7-72024b997cd1.webm)
+
 ## Getting Started
 
 Apply the following changes to `linux/my_application.cc`:
