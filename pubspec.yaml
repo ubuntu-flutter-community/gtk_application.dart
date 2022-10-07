@@ -8,17 +8,17 @@ issue_tracker: https://github.com/jpnurmi/gtk_application.dart/issues
 version: 0.0.1
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
-  flutter: ">=2.5.0"
+  sdk: '>=2.17.0 <3.0.0'
+  flutter: '>=3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
 
 flutter:
   plugin:
