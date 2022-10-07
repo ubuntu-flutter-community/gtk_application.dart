@@ -66,7 +66,7 @@ void main() {
     receivedHints.clear();
     notifier.removeOpenListener(receiveOpen);
 
-    await receiveMethodCall('open', {'files': [], 'hint': ''});
+    await receiveMethodCall('open', {'files': <String>[], 'hint': ''});
     expect(receivedFiles, isEmpty);
     expect(receivedHints, isEmpty);
   });

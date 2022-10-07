@@ -68,7 +68,7 @@ void main() {
     receivedFiles.clear();
     receivedHints.clear();
 
-    await receiveMethodCall('open', {'files': [], 'hint': ''});
+    await receiveMethodCall('open', {'files': <String>[], 'hint': ''});
     expect(receivedFiles, isEmpty);
     expect(receivedHints, isEmpty);
   });
