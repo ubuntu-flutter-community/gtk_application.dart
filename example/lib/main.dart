@@ -14,9 +14,8 @@ class MyHomePage extends StatelessWidget {
       ),
       body: GtkApplication(
         child: const SizedBox.shrink(),
-        onCommandLine: (args) async {
-          print(args);
-          await showDialog(
+        onCommandLine: (args) {
+          showDialog(
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('command-line'),
