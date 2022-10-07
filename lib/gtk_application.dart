@@ -4,12 +4,12 @@ import 'package:flutter/widgets.dart';
 class GtkApplication extends StatefulWidget {
   const GtkApplication({
     super.key,
-    required this.child,
+    this.child,
     this.onCommandLine,
     this.onOpen,
   });
 
-  final Widget child;
+  final Widget? child;
   final void Function(List<String>)? onCommandLine;
   final void Function(List<String>, String)? onOpen;
 
@@ -47,5 +47,5 @@ class _GtkApplicationState extends State<GtkApplication> {
   }
 
   @override
-  Widget build(BuildContext context) => widget.child;
+  Widget build(BuildContext context) => widget.child ?? const SizedBox.shrink();
 }

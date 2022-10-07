@@ -13,7 +13,6 @@ class MyHomePage extends StatelessWidget {
         title: const Text('gtk_application'),
       ),
       body: GtkApplication(
-        child: const SizedBox.shrink(),
         onCommandLine: (args) {
           showDialog(
             context: context,
