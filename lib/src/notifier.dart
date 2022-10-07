@@ -1,16 +1,14 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 typedef GtkCommandLineListener = void Function(List<String> args);
 typedef GtkOpenListener = void Function(List<String> files, String hint);
 
 class GtkApplicationNotifier {
-  GtkApplicationNotifier([@visibleForTesting MethodChannel? channel])
-      : _channel = channel ?? const MethodChannel('gtk_application') {
+  GtkApplicationNotifier() {
     _channel.setMethodCallHandler(_handleMethodCall);
   }
 
-  final MethodChannel _channel;
+  final _channel = const MethodChannel('gtk_application');
   final _commandLineListeners = <GtkCommandLineListener>[];
   final _openListeners = <GtkOpenListener>[];
 
@@ -49,7 +47,7 @@ class GtkApplicationNotifier {
         _notifyOpenListeners(files, hint);
         break;
       default:
-        throw UnimplementedError(call.method);
+        throw UnsupportedError(call.method);
     }
   }
 
