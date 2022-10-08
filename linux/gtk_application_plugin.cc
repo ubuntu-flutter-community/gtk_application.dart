@@ -2,9 +2,6 @@
 
 #include <flutter_linux/flutter_linux.h>
 #include <gtk/gtk.h>
-#include <sys/utsname.h>
-
-#include <cstring>
 
 #define GTK_APPLICATION_PLUGIN(obj)                                     \
   (G_TYPE_CHECK_INSTANCE_CAST((obj), gtk_application_plugin_get_type(), \
