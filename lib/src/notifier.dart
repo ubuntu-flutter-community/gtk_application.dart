@@ -13,8 +13,28 @@ typedef GtkCommandLineListener = void Function(List<String> args);
 ///  * [GApplication::open](https://docs.gtk.org/gio/signal.Application.open.html)
 typedef GtkOpenListener = void Function(List<String> files, String hint);
 
-/// A class that can be used to listen to remote GTK application command-line
-/// arguments and file open requests.
+/// An object that can be used to listen to remote GTK application command-line
+/// arguments and file open requests outside the widget tree.
+///
+/// ```dart
+/// import 'package:flutter/widgets.dart';
+/// import 'package:gtk_application/gtk_application.dart';
+///
+/// void main() {
+///   WidgetsFlutterBinding.ensureInitialized();
+///
+///   final notifier = GtkApplicationNotifier();
+///   notifier.addCommandLineListener((args) {
+///     print('command-line: $args');
+///   });
+///   notifier.addOpenListener((files, hint) {
+///     print('open ($hint): $files');
+///   });
+///
+///   // ...
+///   // notifier.dispose();
+/// }
+/// ```
 ///
 /// See also:
 ///  * [GtkApplication]

@@ -5,7 +5,7 @@
 [![CI](https://github.com/ubuntu-flutter-community/gtk_application.dart/actions/workflows/ci.yaml/badge.svg)](https://github.com/ubuntu-flutter-community/gtk_application.dart/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/ubuntu-flutter-community/gtk_application.dart/branch/main/graph/badge.svg?token=6JSemifJFZ)](https://codecov.io/gh/ubuntu-flutter-community/gtk_application.dart)
 
-This package allows the primary Flutter [GtkApplication](https://developer.gnome.org/documentation/tutorials/application.html)
+This package allows the primary Flutter [GTK application](https://developer.gnome.org/documentation/tutorials/application.html)
 instance to listen to remote application instances' command-line arguments and
 file open requests.
 
@@ -79,7 +79,6 @@ index 5cd43c6..94e7215 100644
  }
 ```
 </details>
-
 
 ## Examples
 

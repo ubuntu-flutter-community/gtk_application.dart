@@ -3,7 +3,24 @@ import 'package:flutter/widgets.dart';
 import 'notifier.dart';
 
 /// A widget that can be used to listen to remote GTK application command-line
-/// arguments and file open requests.
+/// arguments and file open requests from within the widget tree.
+///
+/// ```dart
+/// import 'package:flutter/material.dart';
+/// import 'package:gtk_application/gtk_application.dart';
+///
+/// void main() {
+///   runApp(
+///     MaterialApp(
+///       home: GtkApplication(
+///         onCommandLine: (args) => print('command-line: $args'),
+///         onOpen: (files, hint) => print('open ($hint): $files'),
+///         child: // ...
+///       ),
+///     ),
+///   );
+/// }
+/// ```
 ///
 /// See also:
 ///  * [GtkApplicationNotifier]
