@@ -2,7 +2,16 @@ import 'package:flutter/widgets.dart';
 
 import 'notifier.dart';
 
+/// A widget that can be used to listen to remote GTK application command-line
+/// arguments and file open requests.
+///
+/// See also:
+///  * [GtkApplicationNotifier]
+///  * [GApplication::command-line](https://docs.gtk.org/gio/signal.Application.command-line.html)
+///  * [GApplication::open](https://docs.gtk.org/gio/signal.Application.open.html)
 class GtkApplication extends StatefulWidget {
+  /// Creates a new [GtkApplication] with and optional [onCommandLine] and/or
+  /// [onOpen] callback.
   const GtkApplication({
     super.key,
     this.child,
@@ -11,9 +20,20 @@ class GtkApplication extends StatefulWidget {
     this.notifier,
   });
 
+  /// An optional child widget below this widget in the tree.
   final Widget? child;
+
+  /// An optional listener that will be notified when the application receives
+  /// remote command-line arguments.
   final GtkCommandLineListener? onCommandLine;
+
+  /// An optional listener that will be notified when the application receives
+  /// remote file open requests.
   final GtkOpenListener? onOpen;
+
+  /// An optional notifier that will be used to listen to remote command-line
+  /// arguments and file open requests. If not specified, a new notifier will be
+  /// created.
   final GtkApplicationNotifier? notifier;
 
   @override

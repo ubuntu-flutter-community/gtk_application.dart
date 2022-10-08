@@ -17,6 +17,7 @@ typedef GtkOpenListener = void Function(List<String> files, String hint);
 /// arguments and file open requests.
 ///
 /// See also:
+///  * [GtkApplication]
 ///  * [GApplication::command-line](https://docs.gtk.org/gio/signal.Application.command-line.html)
 ///  * [GApplication::open](https://docs.gtk.org/gio/signal.Application.open.html)
 class GtkApplicationNotifier {
@@ -40,8 +41,8 @@ class GtkApplicationNotifier {
     _commandLineListeners.remove(listener);
   }
 
-  /// Adds a [listener] that will be called when the application receives remote
-  /// file open requests.
+  /// Adds a [listener] that will be notified when the application receives
+  /// remote file open requests.
   void addOpenListener(GtkOpenListener listener) {
     _openListeners.add(listener);
   }
