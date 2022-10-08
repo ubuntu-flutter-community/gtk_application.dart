@@ -42,7 +42,7 @@ void main() {
       onOpen: receiveOpen,
     ));
 
-    notifier.notifyOpen(['foo', 'bar'], 'baz');
+    notifier.notifyOpen(files: ['foo', 'bar'], hint: 'baz');
     expect(receivedFiles, [
       ['foo', 'bar']
     ]);
@@ -71,7 +71,7 @@ void main() {
     );
     notifier1.notifyCommandLine(['foo']);
     expect(onCommandLine1, 1);
-    notifier1.notifyOpen(['foo'], 'bar');
+    notifier1.notifyOpen(files: ['foo'], hint: 'bar');
     expect(onOpen1, 1);
 
     var onCommandLine2 = 0;
@@ -86,12 +86,12 @@ void main() {
     );
     notifier2.notifyCommandLine(['foo']);
     expect(onCommandLine2, 1);
-    notifier2.notifyOpen(['foo'], 'bar');
+    notifier2.notifyOpen(files: ['foo'], hint: 'bar');
     expect(onOpen2, 1);
 
     notifier1.notifyCommandLine(['foo']);
     expect(onCommandLine1, 1);
-    notifier1.notifyOpen(['foo'], 'bar');
+    notifier1.notifyOpen(files: ['foo'], hint: 'bar');
     expect(onOpen1, 1);
   });
 }
