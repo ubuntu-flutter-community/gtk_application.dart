@@ -38,27 +38,27 @@ class GtkApplicationNotifier {
     switch (call.method) {
       case 'command-line':
         final args = call.arguments as List;
-        _notifyCommandLineListeners(args.cast<String>());
+        notifyCommandLine(args.cast<String>());
         break;
       case 'open':
         final args = call.arguments as Map;
         final files = (args['files'] as List).cast<String>();
         final hint = args['hint'].toString();
-        _notifyOpenListeners(files, hint);
+        notifyOpen(files, hint);
         break;
       default:
         throw UnsupportedError(call.method);
     }
   }
 
-  void _notifyCommandLineListeners(List<String> args) {
+  void notifyCommandLine(List<String> args) {
     final listeners = List.of(_commandLineListeners);
     for (final listener in listeners) {
       listener(args);
     }
   }
 
-  void _notifyOpenListeners(List<String> files, String hint) {
+  void notifyOpen(List<String> files, String hint) {
     final listeners = List.of(_openListeners);
     for (final listener in listeners) {
       listener(files, hint);
