@@ -5,7 +5,7 @@ description: |
 homepage: https://github.com/jpnurmi/gtk_application.dart
 repository: https://github.com/jpnurmi/gtk_application.dart
 issue_tracker: https://github.com/jpnurmi/gtk_application.dart/issues
-version: 0.0.1
+version: 0.0.2
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
