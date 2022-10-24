@@ -31,14 +31,11 @@ static gint command_line_cb(GApplication* application,
                             GApplicationCommandLine* command_line,
                             gpointer user_data) {
   FlMethodChannel* method_channel = FL_METHOD_CHANNEL(user_data);
-  if (g_application_command_line_get_is_remote(command_line)) {
-    gchar** arguments =
-        g_application_command_line_get_arguments(command_line, nullptr);
-    g_autoptr(FlValue) value = fl_value_new_list_from_strv(arguments + 1);
-    fl_method_channel_invoke_method(method_channel, "command-line", value,
-                                    nullptr, method_response_cb,
-                                    method_channel);
-  }
+  gchar** arguments =
+      g_application_command_line_get_arguments(command_line, nullptr);
+  g_autoptr(FlValue) value = fl_value_new_list_from_strv(arguments + 1);
+  fl_method_channel_invoke_method(method_channel, "command-line", value,
+                                  nullptr, method_response_cb, method_channel);
   return 0;
 }
 
