@@ -20,10 +20,10 @@ typedef GtkOpenListener = void Function(List<String> files, String hint);
 /// import 'package:flutter/widgets.dart';
 /// import 'package:gtk_application/gtk_application.dart';
 ///
-/// void main() {
+/// void main(List<String> args) {
 ///   WidgetsFlutterBinding.ensureInitialized();
 ///
-///   final notifier = GtkApplicationNotifier();
+///   final notifier = GtkApplicationNotifier(args);
 ///   notifier.addCommandLineListener((args) {
 ///     print('command-line: $args');
 ///   });
@@ -41,14 +41,23 @@ typedef GtkOpenListener = void Function(List<String> files, String hint);
 ///  * [GApplication::command-line](https://docs.gtk.org/gio/signal.Application.command-line.html)
 ///  * [GApplication::open](https://docs.gtk.org/gio/signal.Application.open.html)
 class GtkApplicationNotifier {
-  /// Creates a new [GtkApplicationNotifier].
-  GtkApplicationNotifier() {
+  /// Creates a new [GtkApplicationNotifier]. Optionally, the initial value of
+  /// [commandLine] can be provided.
+  GtkApplicationNotifier([this._commandLine]) {
     _channel.setMethodCallHandler(_handleMethodCall);
   }
 
+  List<String>? _commandLine;
   final _channel = const MethodChannel('gtk_application');
   final _commandLineListeners = <GtkCommandLineListener>[];
   final _openListeners = <GtkOpenListener>[];
+
+  /// Returns the most recent command-line arguments.
+  ///
+  /// This is either the most recently received remote command-line arguments,
+  /// the initial value provided via the constructor, or `null` if none of those
+  /// are available.
+  List<String>? get commandLine => _commandLine;
 
   /// Adds a [listener] that will be notified when the application receives
   /// remote command-line arguments.
@@ -84,6 +93,7 @@ class GtkApplicationNotifier {
   @protected
   @visibleForTesting
   void notifyCommandLine(List<String> args) {
+    _commandLine = args;
     final listeners = List.of(_commandLineListeners);
     for (final listener in listeners) {
       listener(args);
