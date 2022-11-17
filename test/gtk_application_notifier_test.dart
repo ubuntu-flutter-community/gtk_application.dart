@@ -7,7 +7,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test('command-line', () async {
-    final notifier = GtkApplicationNotifier();
+    final notifier = GtkApplicationNotifier(['foo']);
+    expect(notifier.commandLine, ['foo']);
 
     final receivedArgs = <List<String>>[];
     notifier.addCommandLineListener(receivedArgs.add);
@@ -16,18 +17,21 @@ void main() {
     expect(receivedArgs, [
       ['foo', 'bar']
     ]);
+    expect(notifier.commandLine, ['foo', 'bar']);
 
     await receiveMethodCall('command-line', ['baz qux']);
     expect(receivedArgs, [
       ['foo', 'bar'],
       ['baz qux'],
     ]);
+    expect(notifier.commandLine, ['baz qux']);
 
     receivedArgs.clear();
     notifier.removeCommandLineListener(receivedArgs.add);
 
     await receiveMethodCall('command-line', ['none']);
     expect(receivedArgs, isEmpty);
+    expect(notifier.commandLine, ['none']);
   });
 
   test('open', () async {
